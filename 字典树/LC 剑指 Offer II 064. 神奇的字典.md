@@ -1,0 +1,67 @@
+```C++
+struct Trie
+{
+    Trie *child[26];
+    bool isEnd;
+    Trie() {
+        isEnd = false;
+        memset(child, 0, sizeof child);
+    }
+};
+class MagicDictionary {
+public:
+    // https://leetcode.cn/problems/US1pGT/
+
+    Trie *root = new Trie();
+    MagicDictionary() {
+
+    }
+
+    void add(string s) {
+        Trie *cur = root;
+        for (auto& c: s) {
+            if (!cur->child[c - 'a']) cur->child[c - 'a'] = new Trie();
+            cur = cur->child[c - 'a'];
+        }
+        cur->isEnd = true;
+    }
+
+    bool chk(string s) {
+        Trie *cur = root;
+        for (auto& c: s) {
+            if (!cur->child[c - 'a']) return false;
+            cur = cur->child[c - 'a'];
+        }
+        return cur->isEnd;
+    }
+    
+    void buildDict(vector<string> dictionary) {
+        for (auto& d: dictionary) {
+            add(d);
+        }
+    }
+    
+    bool search(string searchWord) {
+        int n = searchWord.size();
+        string t = searchWord;
+        for (int i = 0;  i < n; i++) {
+            char c = t[i];
+            for (int j = 0; j < 26; j++) {
+                if (j + 'a' != c) {
+                    t[i] = j + 'a';
+                    if (chk(t)) return true;
+                }
+            }
+            t[i] = c;
+        }
+        return false;
+    }
+};
+
+/**
+ * Your MagicDictionary object will be instantiated and called as such:
+ * MagicDictionary* obj = new MagicDictionary();
+ * obj->buildDict(dictionary);
+ * bool param_2 = obj->search(searchWord);
+ */
+```
