@@ -1,0 +1,45 @@
+[剑指 Offer II 065. 最短的单词编码](https://leetcode.cn/problems/iSwD2y/)
+```C++
+class Solution {
+public:
+    struct Trie
+    {
+        bool isEnd;
+        Trie *child[26];
+        Trie() {
+            isEnd = false;
+            memset(child, 0, sizeof child);
+        }
+    };
+    Trie *root = new Trie();
+    int res = 0;
+    void insert(string& s) {
+        Trie *cur = root;
+        for (auto& c: s) {
+            if (!cur->child[c - 'a']) cur->child[c - 'a'] = new Trie();
+            cur = cur->child[c - 'a'];
+        }
+        cur->isEnd = true;
+    }
+    void dfs(Trie *root, int k) {
+        if (!root) return;
+        ++k;
+        bool flag = true;
+        for (int i = 0; i < 26; i++) {
+            if (root->child[i]) {
+                dfs(root->child[i], k);
+                flag = false;
+            }
+        }
+        if (flag) res += k;
+    }
+    int minimumLengthEncoding(vector<string>& words) {
+        for (auto& w: words) {
+            reverse(w.begin(), w.end());
+            insert(w);
+        }
+        dfs(root, 0);
+        return res;
+    }
+};
+```
