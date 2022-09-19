@@ -1,0 +1,1 @@
+Zab算法的全称是ZooKeeper原子广播（ZooKeeper atomic broadcast）算法，它被应用在ZooKeeper中。
